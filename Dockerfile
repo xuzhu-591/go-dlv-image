@@ -8,7 +8,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   echo "Asia/Shanghai" > /etc/timezone
 
 RUN go env -w GO111MODULE=on && \
-  go env -w GOPROXY=https://goproxy.cn,direct && \
   go install github.com/go-delve/delve/cmd/dlv@latest
 
 ARG GROUP=horizon
@@ -25,10 +24,6 @@ RUN chmod -R 777 /go
 
 USER $USER
 
-RUN git clone https://github.com/horizoncd/horizon.git \
-  && cd horizon \
-  && go mod tidy \
-  && cd .. \
-  && rm -rf horizon
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 
 CMD ["/bin/bash"]
